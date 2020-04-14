@@ -181,11 +181,19 @@ class Tab extends EventEmitter {
     this.webviewAttributes = args.webviewAttributes || {};
     this.webviewAttributes.src = args.src;
     this.tabElements = {};
+
+    this.webview_args = {
+      useragent: args.useragent,
+      preload: args.preload,
+      security: args.security
+    };
+
     TabPrivate.initTab.bind(this)();
     TabPrivate.initWebview.bind(this)();
     if (args.visible !== false) {
       this.show();
     }
+
     if (typeof args.ready === "function") {
       args.ready(this);
     }
@@ -424,6 +432,20 @@ const TabPrivate = {
   initWebview: function () {
     const webview = this.webview = document.createElement("webview");
 
+    console.log(this);
+
+    if(this.webview_args.useragent!==undefined) {
+      webview.setAttribute('useragent', this.webview_args.useragent);
+    }
+
+    if(this.webview_args.preload!==undefined) {
+      webview.setAttribute('preload', this.webview_args.preload);
+    }
+
+    if(this.webview_args.preload!==undefined) {
+      webview.setAttribute('disablewebsecurity', true);
+    }
+
     const tabWebviewDidFinishLoadHandler = function (e) {
       this.emit("webview-ready", this);
     };
@@ -454,4 +476,5 @@ const TabPrivate = {
 };
 
 module.exports = TabGroup;
+
 
