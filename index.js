@@ -439,7 +439,7 @@ const TabPrivate = {
     }
 
     if(this.webview_args.preload!==undefined) {
-      webview.setAttribute('preload', this.webview_args.preload);
+      webview.setAttribute('preload', decodeURI(this.webview_args.preload));
     }
 
     if(this.webview_args.preload!==undefined) {
